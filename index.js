@@ -47,7 +47,7 @@ async function run() {
         const query={_id: new ObjectId (id)}
 
         const options={
-            projection:{title:1, price:1,service_id:1}
+            projection:{title:1, price:1,service_id:1,img:1}
 
         };
         const result= await serviceCollection.findOne(query,options)
@@ -55,6 +55,16 @@ async function run() {
     })
 
     // bookings
+
+    app.get('/bookings', async(req,res)=>{
+      console.log(req.query.email);
+      let query={};
+      if(req.query?.email){
+        query={email:req.query.email}
+      }
+      const result = await bookingCollection.find(query).toArray();
+      res.send(result)
+    })
 
     app.post('/bookings', async(req,res)=>{
       const booking=req.body;
